@@ -1,4 +1,4 @@
-(ns clj-build-date.core
+(ns clj_manifest_reader.core
   (:import [java.util.jar Manifest])
   (:require [clojure.java.io :as io]))
 
@@ -7,7 +7,7 @@
 (defn get-build-date
   [req]
   (when-not (bound? #'build-date)
-    (intern 'clj-build-date.core 'build-date
+    (intern 'clj_manifest_reader.core 'build-date
             (with-open [manifest (if-let [context (:servlet-context req)]
                                    ;; uberwar
                                    (-> context

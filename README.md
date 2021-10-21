@@ -1,20 +1,23 @@
-# clj-build-date
+# clj-manifest-reader
 
 [![Clojars Project](https://img.shields.io/clojars/v/xcoo/clj-build-date.svg)](https://clojars.org/xcoo/clj-build-date)
 
-A minimal library to read build timestamp from JAR/WAR manifests.
+A minimal library to read build info from JAR/WAR manifests.
 
-Useful for prevent browsers from caching old js and css files.
+* Useful for prevent browsers from caching old js and css files.
 
 ## Prepare
 
 Add this line in your `project.clj`.
 
 ```clojure
-:manifest {"Build-Date" ~(fn [_] (System/currentTimeMillis))}
+:manifest {"Build-Date" ~(fn [_] (System/currentTimeMillis))
+           "Commit" ~(fn [_] (:out (clojure.java.shell/sh "git" "rev-parse" "--short" "HEAD")))}
 ```
 
 ## Usage
+
+### with-build-date
 
 ```clojure
 (ns hello-world.view
@@ -34,6 +37,8 @@ Add this line in your `project.clj`.
 ```
 
 ![network](https://raw.githubusercontent.com/xcoo/clj-build-date/master/img/network.png)
+
+###
 
 ## License
 
