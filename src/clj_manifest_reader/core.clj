@@ -2,23 +2,26 @@
   (:import [java.util.jar Manifest])
   (:require [clojure.java.io :as io]))
 
+(defn read-manifest [req target]
+  (with-open [manifest (if-let [context (:servlet-context req)]
+                         ;; uberwar
+                         (-> context
+                             (.getResourceAsStream "/META-INF/MANIFEST.MF"))
+                         ;; uberjar
+                         (some-> (io/resource "META-INF/MANIFEST.MF")
+                                 .openStream))]
+    (some-> manifest
+            Manifest.
+            .getMainAttributes
+            (.getValue target))))
+
 (declare build-date)
 
 (defn get-build-date
   [req]
   (when-not (bound? #'build-date)
     (intern 'clj_manifest_reader.core 'build-date
-            (with-open [manifest (if-let [context (:servlet-context req)]
-                                   ;; uberwar
-                                   (-> context
-                                       (.getResourceAsStream "/META-INF/MANIFEST.MF"))
-                                   ;; uberjar
-                                   (some-> (io/resource "META-INF/MANIFEST.MF")
-                                           .openStream))]
-              (some-> manifest
-                      Manifest.
-                      .getMainAttributes
-                      (.getValue "Build-Date")))))
+            (read-manifest req "Build-Date")))
   build-date)
 
 (defn with-build-date
@@ -28,3 +31,18 @@
    (str f
         (some->> (get-build-date req)
                  (str "?")))))
+
+(declare commit-hash)
+
+(defn get-commit-hash
+  [req]
+  (when-not (bound? #'commit-hash)
+    (intern 'clj_manifest_reader.core 'commit-hash
+            (read-manifest req "Commit")))
+  commit-hash)
+
+(defn with-commit-hash
+  ([]
+   (with-commit-hash nil))
+  ([req]
+   (get-commit-hash req)))
