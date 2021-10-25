@@ -1,4 +1,4 @@
-(ns clj_manifest_reader.core
+(ns clj-manifest-reader.core
   (:import [java.util.jar Manifest])
   (:require [clojure.java.io :as io]))
 
@@ -20,7 +20,7 @@
 (defn get-build-date
   [req]
   (when-not (bound? #'build-date)
-    (intern 'clj_manifest_reader.core 'build-date
+    (intern 'clj-manifest-reader.core 'build-date
             (read-manifest req "Build-Date")))
   build-date)
 
@@ -37,7 +37,7 @@
 (defn get-commit-hash
   [req]
   (when-not (bound? #'commit-hash)
-    (intern 'clj_manifest_reader.core 'commit-hash
+    (intern 'clj-manifest-reader.core 'commit-hash
             (read-manifest req "Commit")))
   commit-hash)
 
