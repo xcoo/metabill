@@ -38,7 +38,9 @@ Add this line in your `project.clj`.
 
 ![network](https://raw.githubusercontent.com/xcoo/clj-build-date/master/img/network.png)
 
-###
+### with-commit-hash
+
+You can get an build commit hash.
 
 ## License
 
