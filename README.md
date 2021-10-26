@@ -1,4 +1,4 @@
-# clj-manifest-reader
+# metabill
 
 [![Clojars Project](https://img.shields.io/clojars/v/xcoo/clj-build-date.svg)](https://clojars.org/xcoo/clj-build-date)
 
