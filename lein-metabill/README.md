@@ -1,19 +1,14 @@
 # lein-metabill
 
-A Leiningen plugin to do many wonderful things.
+A Leiningen plugin to put meta info into the manifest file.
 
 ## Usage
 
-FIXME: Use this for user-level plugins:
-
-Put `[lein-metabill "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your `:user`
-profile.
-
-FIXME: Use this for project-level plugins:
-
 Put `[lein-metabill "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your project.clj.
+You can use a profile: `plugin.lein-metabill/default`
 
-FIXME: and add an example usage that actually makes sense:
+For example:
 
-    $ lein metabill
-
+```
+$ lein with-profile base,dev,plugin.lein-metabill/default repl
+```
