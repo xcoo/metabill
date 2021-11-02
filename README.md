@@ -8,7 +8,7 @@ A minimal library to read build info from JAR/WAR manifests.
 
 ## Prepare
 
-Put `[lein-metabill "0.1.0-SNAPSHOT"]` into the `:plugins` vector of your project.clj.
+Put `[lein-metabill "0.1.0"]` into the `:plugins` vector of your project.clj.
 You can use a profile: `plugin.lein-metabill/default`
 
 For example:
