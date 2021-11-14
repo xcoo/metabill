@@ -1,48 +1,22 @@
 (ns metabill.core
-  (:import [java.util.jar Manifest])
-  (:require [clojure.java.io :as io]))
+  (:require [clojure.java.shell :as shell]
+            [clojure.edn :as edn]
+            [clojure.string :as string]))
 
-(defn read-manifest [req target]
-  (with-open [manifest (if-let [context (:servlet-context req)]
-                         ;; uberwar
-                         (-> context
-                             (.getResourceAsStream "/META-INF/MANIFEST.MF"))
-                         ;; uberjar
-                         (some-> (io/resource "META-INF/MANIFEST.MF")
-                                 .openStream))]
-    (some-> manifest
-            Manifest.
-            .getMainAttributes
-            (.getValue target))))
+(defn- data []
+  {:build-date (pr-str (System/currentTimeMillis))
+   :commit (string/trim (:out (shell/sh "git" "rev-parse" "--short" "HEAD")))})
 
-(declare build-date)
+(defn write-metabill-edn []
+  (spit "metabill.edn" (pr-str (data))))
 
-(defn get-build-date
-  [req]
-  (when-not (bound? #'build-date)
-    (intern 'metabill.core 'build-date
-            (read-manifest req "Build-Date")))
-  build-date)
+(defn read-metabill-edn []
+  (edn/read-string (slurp "metabill.edn")))
 
-(defn with-build-date
-  ([f]
-   (with-build-date nil f))
-  ([req f]
-   (str f
-        (some->> (get-build-date req)
-                 (str "?")))))
+(defn with-build-date []
+  (let [d (read-metabill-edn)]
+    (:build-date d)))
 
-(declare commit-hash)
-
-(defn get-commit-hash
-  [req]
-  (when-not (bound? #'commit-hash)
-    (intern 'metabill.core 'commit-hash
-            (read-manifest req "Commit")))
-  commit-hash)
-
-(defn with-commit-hash
-  ([]
-   (with-commit-hash nil))
-  ([req]
-   (get-commit-hash req)))
+(defn with-commit-hash []
+  (let [d (read-metabill-edn)]
+    (:commit d)))
