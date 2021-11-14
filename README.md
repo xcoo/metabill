@@ -1,25 +1,26 @@
 # metabill
 
-[![Clojars Project](https://img.shields.io/clojars/v/xcoo/clj-build-date.svg)](https://clojars.org/xcoo/clj-build-date)
+<!-- [![Clojars Project](https://img.shields.io/clojars/v/xcoo/clj-build-date.svg)](https://clojars.org/xcoo/clj-build-date) -->
 
-A minimal library to read build info from JAR/WAR manifests.
-
-* Useful for prevent browsers from caching old js and css files.
+A minimal library to read build info.
 
 ## Prepare
 
 Put `[lein-metabill "0.1.0"]` into the `:plugins` vector of your project.clj.
-You can use a profile: `plugin.lein-metabill/default`
-
-For example:
+And run `lein metabill` before building system:
 
 ```
-$ lein with-profile base,dev,plugin.lein-metabill/default repl
+$ lein metabill
+output metabill.edn
 ```
+
+You get `metabill.edn`.
 
 ## Usage
 
 ### with-build-date
+
+This function is useful for prevent browsers from caching old js and css files.
 
 ```clojure
 (ns hello-world.view
