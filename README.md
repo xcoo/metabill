@@ -25,7 +25,7 @@ This function is useful for prevent browsers from caching old js and css files.
 ```clojure
 (ns hello-world.view
   (:require [hiccup.page :refer [html5 include-css include-js]]
-            [clj-build-date.core :refer [with-build-date]]))
+            [metabill.core :refer [with-build-date]]))
 
 (defn frame
   [req]
@@ -33,10 +33,10 @@ This function is useful for prevent browsers from caching old js and css files.
    [:head
     [:title "Hello World!"]
     [:meta {:charset "utf-8"}]
-    (include-css (with-build-date req "/css/main.css"))]
+    (include-css (with-build-date "/css/main.css"))]
    [:body
     [:div#app]
-    (include-js (with-build-date req "/js/main.js"))]))
+    (include-js (with-build-date "/js/main.js"))]))
 ```
 
 ![network](https://raw.githubusercontent.com/xcoo/clj-build-date/master/img/network.png)

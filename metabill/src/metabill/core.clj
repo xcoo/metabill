@@ -13,10 +13,12 @@
 (defn read-metabill-edn []
   (edn/read-string (slurp "metabill.edn")))
 
-(defn with-build-date []
+(defn with-build-date [f]
   (let [d (read-metabill-edn)]
-    (:build-date d)))
+    (str f
+         (some->> (:build-date d)
+                  (str "?")))))
 
-(defn with-commit-hash []
+(defn commit-hash []
   (let [d (read-metabill-edn)]
     (:commit d)))
