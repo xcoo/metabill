@@ -1,4 +1,4 @@
-(defproject xcoo/lein-metabill "0.1.0"
+(defproject jp.xcoo/lein-metabill "0.1.0"
   :description "Read build meta info"
   :url "https://github.com/xcoo/metabill"
   :license {:name "Apache License, Version 2.0"
