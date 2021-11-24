@@ -1,4 +1,4 @@
-(defproject jp.xcoo/metabill "0.1.1-SNAPSHOT"
+(defproject jp.xcoo/metabill "0.1.1"
   :description "Read build meta info"
   :url "https://github.com/xcoo/metabill"
   :license {:name "Apache License, Version 2.0"
