@@ -6,7 +6,7 @@ A minimal library to read build info.
 
 ## Prepare
 
-Put `[xcoo/metabill "0.1.0"]` into the `:dependencies` vector and `[xcoo/lein-metabill "0.1.0"]` into the `:plugins` vector of your project.clj.
+Put `[jp.xcoo/metabill "0.1.0"]` into the `:dependencies` vector and `[jp.xcoo/lein-metabill "0.1.0"]` into the `:plugins` vector of your project.clj.
 And run `lein metabill` before building system:
 
 ```
