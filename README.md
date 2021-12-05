@@ -6,7 +6,7 @@ A minimal library to read build info.
 
 ## Prepare
 
-Put `[xcoo/metabill "0.1.0"]` into the `:dependencies` vector and `[xcoo/lein-metabill "0.1.0"]` into the `:plugins` vector of your project.clj.
+Put `[jp.xcoo/metabill "0.1.0"]` into the `:dependencies` vector and `[jp.xcoo/lein-metabill "0.1.0"]` into the `:plugins` vector of your project.clj.
 And run `lein metabill` before building system:
 
 ```
@@ -39,11 +39,13 @@ This function is useful for prevent browsers from caching old js and css files.
     (include-js (with-build-date "/js/main.js"))]))
 ```
 
-![network](https://raw.githubusercontent.com/xcoo/clj-build-date/master/img/network.png)
+![network](https://raw.githubusercontent.com/xcoo/metabill/master/img/network.png)
 
 ### commit-hash
 
 You can get an build commit hash.
+
+![commit-hash](https://raw.githubusercontent.com/xcoo/metabill/master/img/commit-hash.png)
 
 ## License
 

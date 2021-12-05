@@ -8,10 +8,10 @@
    :commit (string/trim (:out (shell/sh "git" "rev-parse" "--short" "HEAD")))})
 
 (defn write-metabill-edn []
-  (spit "metabill.edn" (pr-str (data))))
+  (spit "target/metabill.edn" (pr-str (data))))
 
 (defn read-metabill-edn []
-  (edn/read-string (slurp "metabill.edn")))
+  (edn/read-string (slurp "target/metabill.edn")))
 
 (defn with-build-date [f]
   (let [d (read-metabill-edn)]

@@ -10,3 +10,4 @@ pom.xml.asc
 */.nrepl-port
 /.lein-*
 /.nrepl-port
+metabill.edn
