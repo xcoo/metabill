@@ -1,31 +1,27 @@
 # metabill
 
-<!-- [![Clojars Project](https://img.shields.io/clojars/v/xcoo/clj-build-date.svg)](https://clojars.org/xcoo/clj-build-date) -->
+[![Clojars Project](https://img.shields.io/clojars/v/jp.xcoo/metabill.svg)](https://clojars.org/jp.xcoo/metabill)
 
-A minimal library to read build info.
+[![Clojars Project](https://img.shields.io/clojars/v/jp.xcoo/lein-metabill.svg)](https://clojars.org/jp.xcoo/lein-metabill)
+
+A tiny library to handle build meta informatoin.
 
 ## Prepare
 
-Put `[jp.xcoo/metabill "0.1.0"]` into the `:dependencies` vector and `[jp.xcoo/lein-metabill "0.1.0"]` into the `:plugins` vector of your project.clj.
-And run `lein metabill` before building system:
-
-```
-$ lein metabill
-output metabill.edn
-```
-
-You get `metabill.edn`.
+Put `[jp.xcoo/metabill "0.1.0"]` into the `:dependencies` and `[jp.xcoo/lein-metabill "0.1.0"]` into the `:plugins` of your `project.clj`.
+And run `lein metabill` before building for production.
+It automatically generates `target/metabill.edn` which has some meta data of the build.
 
 ## Usage
 
-### with-build-date
+### Avoid browser's caching
 
-This function is useful for prevent browsers from caching old js and css files.
+You can prevent browsers from caching old JS and CSS files using `with-build-time`:
 
 ```clojure
 (ns hello-world.view
   (:require [hiccup.page :refer [html5 include-css include-js]]
-            [metabill.core :refer [with-build-date]]))
+            [metabill.core :refer [with-build-time]]))
 
 (defn frame
   [req]
@@ -33,19 +29,45 @@ This function is useful for prevent browsers from caching old js and css files.
    [:head
     [:title "Hello World!"]
     [:meta {:charset "utf-8"}]
-    (include-css (with-build-date "/css/main.css"))]
+    (include-css (with-build-time "/css/main.css"))]
    [:body
     [:div#app]
-    (include-js (with-build-date "/js/main.js"))]))
+    (include-js (with-build-time "/js/main.js"))]))
 ```
 
-![network](https://raw.githubusercontent.com/xcoo/metabill/master/img/network.png)
+![network](img/network.png)
 
-### commit-hash
+You can also use commit hash:
 
-You can get an build commit hash.
+```clojure
+(ns hello-world.view
+  (:require [hiccup.page :refer [html5 include-css include-js]]
+            [metabill.core :refer [with-build-commit-hash]]))
 
-![commit-hash](https://raw.githubusercontent.com/xcoo/metabill/master/img/commit-hash.png)
+(defn frame
+  [req]
+  (html5
+   [:head
+    [:title "Hello World!"]
+    [:meta {:charset "utf-8"}]
+    (include-css (with-build-commit-hash "/css/main.css"))]
+   [:body
+    [:div#app]
+    (include-js (with-build-commit-hash "/js/main.js"))]))
+```
+
+### Embed meta information of the build
+
+If you simply want to handle the build meta information, you can use as follows:
+
+```clojure
+(ns hello-world.view
+  (:require [metabill.core :refer [get-build-time get-build-commit-hash]]))
+
+(defn print-build-info
+  []
+  (println "This system is built on" (get-build-commit-hash) "commit at" (get-build-time) "unix epoc."))
+```
 
 ## License
 
