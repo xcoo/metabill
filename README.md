@@ -4,13 +4,12 @@
 
 [![Clojars Project](https://img.shields.io/clojars/v/jp.xcoo/lein-metabill.svg)](https://clojars.org/jp.xcoo/lein-metabill)
 
-A tiny library to handle build meta informatoin.
+A tiny library to handle the build meta information.
 
 ## Prepare
 
-Put `[jp.xcoo/metabill "0.1.0"]` into the `:dependencies` and `[jp.xcoo/lein-metabill "0.1.0"]` into the `:plugins` of your `project.clj`.
-And run `lein metabill` before building for production.
-It automatically generates `target/metabill.edn` which has some meta data of the build.
+Put `jp.xcoo/metabill` into the `dependencies` and `jp.xcoo/lein-metabill` into the `plugins` of your leiningen's `project.clj`.
+And run `lein metabill` before building for production, then it automatically generates `target/metabill.edn`, which has some build metadata.
 
 ## Usage
 
@@ -58,10 +57,10 @@ You can also use commit hash:
 
 ### Embed meta information of the build
 
-If you simply want to handle the build meta information, you can use as follows:
+If you want to handle only the build metadata, you can use it as follows:
 
 ```clojure
-(ns hello-world.view
+(ns hello-world.core
   (:require [metabill.core :refer [get-build-time get-build-commit-hash]]))
 
 (defn print-build-info
