@@ -9,7 +9,10 @@ A tiny library to handle the build meta information.
 ## Prepare
 
 Put `jp.xcoo/metabill` into the `dependencies` and `jp.xcoo/lein-metabill` into the `plugins` of your leiningen's `project.clj`.
-And run `lein metabill` before building for production, then it automatically generates `target/metabill.edn`, which has some build metadata.
+And run `lein metabill` before building for production, then it automatically generates `resources/metabill.edn`, which has some build metadata.
+
+The default configuration of leiningen includes the `resources` directory as the classpath, so you don't need to do more.
+Note that if you have modified `resource-paths`, you need to add `metabill.edn` to the classpath.
 
 ## Usage
 
