@@ -1,9 +1,11 @@
 (ns metabill.core
   (:require [clojure.java.shell :as shell]
             [clojure.edn :as edn]
-            [clojure.string :as string]))
+            [clojure.string :as string]
+            [clojure.java.io :as io]))
 
-(def ^:dynamic metabill-file-path "target/metabill.edn")
+(def ^:dynamic metabill-dir-path "resources")
+(def ^:dynamic metabill-filename "metabill.edn")
 
 (def build-meta
   {:time (fn []
@@ -17,12 +19,13 @@
        (into {})))
 
 (defn save-build-meta-data []
-  (let [d (make-build-meta-data)]
-    (spit metabill-file-path (pr-str d))
+  (let [d (make-build-meta-data)
+        f (.getAbsolutePath (io/file metabill-dir-path metabill-filename))]
+    (spit f (pr-str d))
     d))
 
 (defn load-build-meta-data []
-  (edn/read-string (slurp metabill-file-path)))
+  (edn/read-string (slurp (io/resource metabill-filename))))
 
 ;;; with
 
