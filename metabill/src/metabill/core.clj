@@ -3,22 +3,49 @@
             [clojure.edn :as edn]
             [clojure.string :as string]))
 
-(defn- data []
-  {:build-date (pr-str (System/currentTimeMillis))
-   :commit (string/trim (:out (shell/sh "git" "rev-parse" "--short" "HEAD")))})
+(def ^:dynamic metabill-file-path "target/metabill.edn")
 
-(defn write-metabill-edn []
-  (spit "target/metabill.edn" (pr-str (data))))
+(def build-meta
+  {:time (fn []
+           (pr-str (System/currentTimeMillis)))
+   :commit-hash (fn []
+                  (string/trim (:out (shell/sh "git" "rev-parse" "--short" "HEAD"))))})
 
-(defn read-metabill-edn []
-  (edn/read-string (slurp "target/metabill.edn")))
+(defn- make-build-meta-data []
+  (->> build-meta
+       (map (fn [[k f]] [k (f)]))
+       (into {})))
 
-(defn with-build-date [f]
-  (let [d (read-metabill-edn)]
+(defn save-build-meta-data []
+  (let [d (make-build-meta-data)]
+    (spit metabill-file-path (pr-str d))
+    d))
+
+(defn load-build-meta-data []
+  (edn/read-string (slurp metabill-file-path)))
+
+;;; with
+
+(defn with-meta-data
+  [f ks]
+  (let [d (load-build-meta-data)]
     (str f
-         (some->> (:build-date d)
+         (some->> ks
+                  (keep #(get d %))
+                  (string/join "_")
                   (str "?")))))
 
-(defn commit-hash []
-  (let [d (read-metabill-edn)]
-    (:commit d)))
+(def with-build-time #(with-meta-data % [:time]))
+(def with-build-commit-hash #(with-meta-data % [:commit-hash]))
+(def with-build-meta #(with-meta-data % (keys build-meta)))
+
+;;; get
+
+(defn get-meta-data
+  [k]
+  (let [d (load-build-meta-data)]
+    (get d k)))
+
+(def get-build-time #(get-meta-data :time))
+(def get-build-commit-hash #(get-meta-data :commit-hash))
+(def get-build-meta load-build-meta-data)
