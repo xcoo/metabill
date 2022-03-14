@@ -25,7 +25,10 @@
     d))
 
 (defn load-build-meta-data []
-  (edn/read-string (slurp (io/resource metabill-filename))))
+  (let [resource-file (io/resource metabill-filename)]
+    (if resource-file
+      (edn/read-string (slurp resource-file))
+      nil)))
 
 ;;; with
 
