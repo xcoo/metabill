@@ -27,7 +27,9 @@
 (defn load-build-meta-data []
   (let [resource-file (io/resource metabill-filename)]
     (if resource-file
-      (edn/read-string (slurp resource-file))
+      (try
+        (edn/read-string (slurp resource-file))
+        (catch Exception _ nil))
       nil)))
 
 ;;; with
