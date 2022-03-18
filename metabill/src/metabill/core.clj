@@ -29,7 +29,9 @@
     (if resource-file
       (try
         (edn/read-string (slurp resource-file))
-        (catch Exception _ nil))
+        (catch RuntimeException re ((binding [*out* *err*]
+                                      (println (.getMessage re)))
+                                    nil)))
       nil)))
 
 ;;; with
