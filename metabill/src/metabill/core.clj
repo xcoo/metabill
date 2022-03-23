@@ -6,7 +6,7 @@
   (:import [java.io FileNotFoundException]))
 
 (def ^:dynamic metabill-dir-path "resources")
-(def ^:dynamic metabill-filename "metabill_err.edn")
+(def ^:dynamic metabill-filename "metabill.edn")
 
 (def build-meta
   {:time (fn []
