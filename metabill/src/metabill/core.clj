@@ -26,7 +26,6 @@
     d))
 
 (defn- print-err [& msg]
-  (println msg)
   (binding [*out* *err*]
     (println (apply str msg))))
 
