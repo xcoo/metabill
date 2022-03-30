@@ -35,10 +35,12 @@
       (try
         (edn/read-string (slurp resource-file))
         (catch FileNotFoundException e (print-err
-                                        (str "The metabill file does not exist: " metabill-filename)))
+                                        (str "Denied to accesss the metabill file: " metabill-filename)))
         (catch RuntimeException e (print-err
                                    (str "Some errors occured when parsing the metabill file of edn format: " metabill-filename))))
-      nil)))
+      (do
+        (print-err (str "The metabill file does not exist: " metabill-filename))
+        nil))))
 
 ;;; with
 
