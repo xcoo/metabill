@@ -34,27 +34,10 @@
     (if resource-file
       (try
         (edn/read-string (slurp resource-file))
-
-        (catch NumberFormatException nfe (print-err
-                                          (str
-                                           "Found an Invalid Number when reading: "
-                                           metabill-dir-path "/" metabill-filename
-                                           " (" (.getMessage nfe) ")")))
-        (catch IllegalArgumentException iae (print-err
-                                             (str
-                                              "Found an Illegal Argument when reading: "
-                                              metabill-dir-path "/" metabill-filename
-                                              " (" (.getMessage iae) ")")))
-        (catch FileNotFoundException fnf (print-err
-                                          (str
-                                           "File not exist: "
-                                           metabill-dir-path "/" metabill-filename
-                                            " (" (.getMessage fnf) ")")))
-        (catch RuntimeException re (print-err
-                                    (str
-                                     "Error when reading "
-                                     metabill-dir-path "/" metabill-filename
-                                     " (" (.getMessage re) ")"))))
+        (catch FileNotFoundException e (print-err
+                                        (str "The metabill file does not exist: " metabill-filename)))
+        (catch RuntimeException e (print-err
+                                   (str "Some errors occured when parsing the metabill file of edn format: " metabill-filename))))
       nil)))
 
 ;;; with
