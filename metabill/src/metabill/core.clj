@@ -2,7 +2,8 @@
   (:require [clojure.java.shell :as shell]
             [clojure.edn :as edn]
             [clojure.string :as string]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io])
+  (:import [java.io FileNotFoundException]))
 
 (def ^:dynamic metabill-dir-path "resources")
 (def ^:dynamic metabill-filename "metabill.edn")
@@ -24,8 +25,37 @@
     (spit f (pr-str d))
     d))
 
+(defn- print-err [& msg]
+  (binding [*out* *err*]
+    (println (apply str msg))))
+
 (defn load-build-meta-data []
-  (edn/read-string (slurp (io/resource metabill-filename))))
+  (let [resource-file (io/resource metabill-filename)]
+    (if resource-file
+      (try
+        (edn/read-string (slurp resource-file))
+
+        (catch NumberFormatException nfe (print-err
+                                          (str
+                                           "Found an Invalid Number when reading: "
+                                           metabill-dir-path "/" metabill-filename
+                                           " (" (.getMessage nfe) ")")))
+        (catch IllegalArgumentException iae (print-err
+                                             (str
+                                              "Found an Illegal Argument when reading: "
+                                              metabill-dir-path "/" metabill-filename
+                                              " (" (.getMessage iae) ")")))
+        (catch FileNotFoundException fnf (print-err
+                                          (str
+                                           "File not exist: "
+                                           metabill-dir-path "/" metabill-filename
+                                            " (" (.getMessage fnf) ")")))
+        (catch RuntimeException re (print-err
+                                    (str
+                                     "Error when reading "
+                                     metabill-dir-path "/" metabill-filename
+                                     " (" (.getMessage re) ")"))))
+      nil)))
 
 ;;; with
 
