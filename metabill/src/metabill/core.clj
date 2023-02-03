@@ -22,6 +22,7 @@
 (defn save-build-meta-data []
   (let [d (make-build-meta-data)
         f (.getAbsolutePath (io/file metabill-dir-path metabill-filename))]
+    (.mkdirs (io/file metabill-dir-path))
     (spit f (pr-str d))
     d))
 
